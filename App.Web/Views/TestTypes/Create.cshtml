@@ -24,7 +24,7 @@
     </div>
 </div>
 
-<div class="wrapper wrapper-content animated fadeInRight" ng-controller="addController">
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="testTypeController">
     <div class="row">
         <div class="col-lg-7">
             <div class="ibox float-e-margins">
@@ -43,22 +43,22 @@
                     <div class="row">
                         <table class="table table-bordered">
                             <thead>
-                                <tr>
-                                    <th width="50">SL#</th>
-                                    <th>@Html.DisplayNameFor(m=>m.TestTypeName)</th>
-                                    <th width="180">Action</th>
-                                </tr>
+                            <tr>
+                                <th width="50">SL#</th>
+                                <th>@Html.DisplayNameFor(m => m.TestTypeName)</th>
+                                <th width="180">Action</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="testType in testTypes">
-                                    <td>{{$index+1}}</td>
-                                    <td>{{testType.TestTypeName}}</td>
-                                    <td>
-                                        <a href="@Url.Action("Details","TestTypes")" class="btn btn-xs btn-info">Details</a>
-                                        <a href="/TestTpes/Edit/{{testType.TestTypeId}}" class="btn btn-xs btn-default">Edit</a>
-                                        <button href="/TestTpes/Edit/{{testType.TestTypeId}}" class="btn btn-xs btn-danger" ng-click="confirmDelete(this)">Delete</button>
-                                    </td>
-                                </tr>
+                            <tr ng-repeat="testType in testTypes">
+                                <td>{{$index+1}}</td>
+                                <td>{{testType.TestTypeName}}</td>
+                                <td>
+                                    <a href="@Url.Action("Details", "TestTypes")" class="btn btn-xs btn-info">Details</a>
+                                    <button class="btn btn-xs btn-default" ng-click="editTestType(this)" data-toggle="modal" data-target="#editTestTypeModal">Edit</button>
+                                    <button class="btn btn-xs btn-danger" ng-click="confirmDelete(this)">Delete</button>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -79,20 +79,28 @@
                     </div>
                 </div>
                 <div class="ibox-content">
+                    <div class="alert alert-success alert-dismissable" ng-show="isAdded">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        Test Type Added!
+                    </div>
+                    <div class="alert alert-danger alert-dismissable" ng-show="isAdded=='false'">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        Oops.. Something wrong! Try again!
+                    </div>
                     <form class="form-horizontal" ng-submit="submit()" name="addTestTypeForm">
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="form-group">
                             @Html.LabelFor(model => model.TestTypeName, htmlAttributes: new { @class = "control-label col-lg-4" })
                             <div class="col-lg-6">
-                                @Html.TextBoxFor(model => model.TestTypeName,new { @class = "form-control", @ng_model= "testType.TestTypeName" } )
+                                @Html.TextBoxFor(model => model.TestTypeName, new { @class = "form-control", @ng_model = "testType.TestTypeName" })
                                 <span class="help-block m-b-none text-danger">@Html.ValidationMessageFor(model => model.TestTypeName)</span>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-lg-offset-4 col-lg-6">
-                                <input type="submit" value="Add" class="btn btn-sm btn-white" />
+                                <button type="submit" class="btn btn-primary btn-sm dim">Add</button>
                             </div>
                         </div>
                     </form>
@@ -100,12 +108,39 @@
             </div>
         </div>
     </div>
-    
+</div>
+<div ng-controller="modalController">
+    <div class="modal inmodal" id="editTestTypeModal" tabindex="-1" role="dialog" aria-hidden="true" modal="editTestTypeModal">
+        <div class="modal-dialog" >
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title">Edit | Test Type</h3>
+                </div>
+                <form method="post" class="form-horizontal" ng-submit="saveChangesTestType()">
+                    <div class="modal-body">
+                        <input type="hidden" ng-model="testType.TestTypeId" />
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.TestTypeName, new { @class = "control-label col-lg-4" })
+                            <div class="col-lg-6">
+                                @Html.TextBoxFor(m => m.TestTypeName, new { @class = "form-control", @ng_model = "testType.TestTypeName" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm dim" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-sm dim">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/plugins/iCheck")
+    @Scripts.Render("~/plugins/sweetAlert")
     <script type="text/javascript">
         $(document).ready(function () {
             $('.i-checks').iCheck({
@@ -118,4 +153,5 @@
 
 @section Styles {
     @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+    @Styles.Render("~/plugins/sweetAlertStyles")
 }
