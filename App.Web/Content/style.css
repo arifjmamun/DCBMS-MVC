@@ -8551,3 +8551,10 @@ body.md-skin {
     margin: 0;
   }
 }
+
+
+
+
+.field-validation-error {
+    font-size: 10px;
+}

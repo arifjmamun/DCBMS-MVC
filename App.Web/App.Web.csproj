@@ -208,6 +208,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\TestTypesAPIController.cs" />
     <Compile Include="Controllers\TestTypesController.cs" />
     <Compile Include="Extension\HMTLHelperExtensions.cs" />
     <Compile Include="Global.asax.cs">
@@ -229,11 +230,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\app\dcbms.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\angular.min.js.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -303,7 +309,6 @@
     <Folder Include="Content\plugins\" />
     <Folder Include="fonts\font-awesome\" />
     <Folder Include="Images\" />
-    <Folder Include="Scripts\app\" />
     <Folder Include="Scripts\plugins\" />
   </ItemGroup>
   <ItemGroup>

@@ -19,6 +19,6 @@ namespace App.Core.Models.EntityModels
         [StringLength(50, MinimumLength = 2)]
         public string TestTypeName { get; set; }
 
-        public virtual List<Test> Tests { get; set; }
+        public virtual List<Test> Tests { get; set; } = new List<Test>();
     }
 }
