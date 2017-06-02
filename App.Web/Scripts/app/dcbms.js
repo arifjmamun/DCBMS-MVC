@@ -10,17 +10,36 @@ app.run(function($rootScope, $http) {
 app.controller("testTypeController", function ($rootScope, $scope, $http, $filter) {
 
     $scope.submit = function () {
-        $http.post("/api/TestTypesAPI", $scope.testType) .then(function(response) {
+        $http.post("/api/TestTypesAPI", $scope.testType).then(function (response) {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": true,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
             if (response.status === 201) {
                 $rootScope.testTypes.push(response.data);
 
                 $scope.addTestTypeForm.$setPristine();
                 $scope.addTestTypeForm.$setUntouched();
                 $scope.testType = {};
-                $scope.isAdded = true;
+                //notification
+
+                toastr.success('Success!', 'Test Type added!');
+                
                 return;
             }
-            $scope.isAdded = false;
+            toastr.error('Error!', 'Internal Problem! Try Again!');
             return;
         });
     };

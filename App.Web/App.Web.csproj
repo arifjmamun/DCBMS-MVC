@@ -298,10 +298,6 @@
     <Content Include="Views\Shared\_SkinConfig.cshtml" />
     <Content Include="Views\Shared\_TopNavbar.cshtml" />
     <Content Include="Views\Shared\_TopNavbar2.cshtml" />
-    <Content Include="Views\TestTypes\Create.cshtml" />
-    <Content Include="Views\TestTypes\Delete.cshtml" />
-    <Content Include="Views\TestTypes\Details.cshtml" />
-    <Content Include="Views\TestTypes\Edit.cshtml" />
     <Content Include="Views\TestTypes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
