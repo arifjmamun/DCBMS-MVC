@@ -1,22 +1,22 @@
-﻿@model App.Core.Models.EntityModels.TestType
+﻿@model App.Core.Models.EntityModels.Test
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Tests";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
-        <h2>Test Types</h2>
+        <h2>Tests</h2>
         <ol class="breadcrumb">
             <li>
                 <a href="@Url.Action("Index", "TestTypes")">Home</a>
             </li>
             <li class="active">
-                <a href="@Url.Action("Index", "TestTypes")">Test Types</a>
+                <a href="@Url.Action("Index", "Tests")">Tests</a>
             </li>
             <li class="active">
-                <strong><a href="@Url.Action("Index", "TestTypes")">Create</a></strong>
+                <strong><a href="@Url.Action("Index", "Tests")">Add New</a></strong>
             </li>
         </ol>
     </div>
@@ -24,7 +24,7 @@
     </div>
 </div>
 
-<div class="wrapper wrapper-content animated fadeInRight" ng-controller="testTypeController">
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="testController">
     <div class="row">
         <div class="col-lg-7">
             <div class="ibox float-e-margins">
@@ -45,17 +45,21 @@
                             <thead>
                                 <tr>
                                     <th width="50">SL#</th>
-                                    <th>@Html.DisplayNameFor(m => m.TestTypeName)</th>
+                                    <th>@Html.DisplayNameFor(m => m.TestName)</th>
+                                    <th>@Html.DisplayNameFor(m => m.Fee)</th>
+                                    <th>@Html.DisplayNameFor(m => m.TestTypeId)</th>
                                     <th width="180">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="testType in testTypes">
+                                <tr ng-repeat="test in tests">
                                     <td>{{$index+1}}</td>
-                                    <td>{{testType.TestTypeName}}</td>
+                                    <td>{{test.TestName}}</td>
+                                    <td>{{test.Fee}}</td>
+                                    <td>{{test.TestTypeId}}</td>
                                     <td>
-                                        <a href="@Url.Action("Index", "TestTypes")" class="btn btn-xs btn-info">Details</a>
-                                        <button class="btn btn-xs btn-default" ng-click="editTestType(this)" data-toggle="modal" data-target="#editTestTypeModal">Edit</button>
+                                        <a href="@Url.Action("Index", "Tests")" class="btn btn-xs btn-info">Details</a>
+                                        <button class="btn btn-xs btn-default" ng-click="editTest(this)" data-toggle="modal" data-target="#editTestModal">Edit</button>
                                         <button class="btn btn-xs btn-danger" ng-click="confirmDelete(this)">Delete</button>
                                     </td>
                                 </tr>
@@ -68,7 +72,7 @@
         <div class="col-lg-5">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Add Test Type</h5>
+                    <h5>Add Test</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -79,14 +83,28 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal" ng-submit="submit()" name="addTestTypeForm">
+                    <form class="form-horizontal" ng-submit="submit()" name="addTestForm">
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="form-group">
-                            @Html.LabelFor(model => model.TestTypeName, htmlAttributes: new { @class = "control-label col-lg-4" })
+                            @Html.LabelFor(model => model.TestName, htmlAttributes: new { @class = "control-label col-lg-4" })
                             <div class="col-lg-6">
-                                @Html.TextBoxFor(model => model.TestTypeName, new { @class = "form-control", @ng_model = "testType.TestTypeName" })
-                                <span class="help-block m-b-none text-danger">@Html.ValidationMessageFor(model => model.TestTypeName)</span>
+                                @Html.TextBoxFor(model => model.TestName, new { @class = "form-control", @ng_model = "test.TestName" })
+                                <span class="help-block m-b-none text-danger">@Html.ValidationMessageFor(model => model.TestName)</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Fee, htmlAttributes: new { @class = "control-label col-lg-4" })
+                            <div class="col-lg-6">
+                                @Html.TextBoxFor(model => model.Fee, new { @class = "form-control", @ng_model = "test.Fee" })
+                                <span class="help-block m-b-none text-danger">@Html.ValidationMessageFor(model => model.Fee)</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TestTypeId, htmlAttributes: new { @class = "control-label col-lg-4" })
+                            <div class="col-lg-6">
+                                @Html.DropDownListFor(model => model.TestTypeId, Enumerable.Empty<SelectListItem>(), "Select One", new { @class = "form-control", @ng_model = "test.TestTypeId" })
+                                <span class="help-block m-b-none text-danger">@Html.ValidationMessageFor(model => model.TestTypeId)</span>
                             </div>
                         </div>
 
@@ -102,20 +120,35 @@
     </div>
 </div>
 <div ng-controller="modalController">
-    <div class="modal inmodal" id="editTestTypeModal" tabindex="-1" role="dialog" aria-hidden="true" modal="editTestTypeModal">
+    <div class="modal inmodal" id="editTestModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h3 class="modal-title">Edit | Test Type</h3>
                 </div>
-                <form method="post" class="form-horizontal" ng-submit="saveChangesTestType()">
+                <form method="post" class="form-horizontal" ng-submit="saveChangesTest()">
                     <div class="modal-body">
-                        <input type="hidden" ng-model="testType.TestTypeId" />
+                        <input type="hidden" ng-model="test.TestId" />
                         <div class="form-group">
-                            @Html.LabelFor(m => m.TestTypeName, new { @class = "control-label col-lg-4" })
+                            @Html.LabelFor(m => m.TestName, new { @class = "control-label col-lg-4" })
                             <div class="col-lg-6">
-                                @Html.TextBoxFor(m => m.TestTypeName, new { @class = "form-control", @ng_model = "testType.TestTypeName" })
+                                @Html.TextBoxFor(m => m.TestName, new { @class = "form-control", @ng_model = "test.TestName" })
+                                <span class="help-block m-b-none text-danger">@Html.ValidationMessageFor(model => model.TestName)</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Fee, new { @class = "control-label col-lg-4" })
+                            <div class="col-lg-6">
+                                @Html.TextBoxFor(m => m.Fee, new { @class = "form-control", @ng_model = "test.Fee" })
+                                <span class="help-block m-b-none text-danger">@Html.ValidationMessageFor(model => model.Fee)</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TestTypeId, htmlAttributes: new { @class = "control-label col-lg-4" })
+                            <div class="col-lg-6">
+                                @Html.DropDownListFor(model => model.TestTypeId, Enumerable.Empty<SelectListItem>(), "Select One", new { @class = "form-control", @ng_model = "test.TestTypeId" })
+                                <span class="help-block m-b-none text-danger">@Html.ValidationMessageFor(model => model.TestTypeId)</span>
                             </div>
                         </div>
                     </div>
@@ -128,17 +161,16 @@
         </div>
     </div>
 </div>
-
-@section ScriptsInHead
+@*@section ScriptsInHead
 {
-    <script src="~/Scripts/app/dcbms.js"></script>
-}
-
+    <script src="~/Scripts/app/test.js"></script>
+}*@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/plugins/iCheck")
     @Scripts.Render("~/plugins/sweetAlert")
     @Scripts.Render("~/plugins/toastr")
+   <script src="~/Scripts/app/test.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('.i-checks').iCheck({
@@ -154,3 +186,5 @@
     @Styles.Render("~/plugins/sweetAlertStyles")
     @Styles.Render("~/plugins/toastrStyles")
 }
+
+

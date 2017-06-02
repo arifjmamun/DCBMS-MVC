@@ -208,6 +208,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\TestsAPIController.cs" />
+    <Compile Include="Controllers\TestsController.cs" />
     <Compile Include="Controllers\TestTypesAPIController.cs" />
     <Compile Include="Controllers\TestTypesController.cs" />
     <Compile Include="Extension\HMTLHelperExtensions.cs" />
@@ -234,6 +236,7 @@
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\app\dcbms.js" />
+    <Content Include="Scripts\app\test.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -299,6 +302,7 @@
     <Content Include="Views\Shared\_TopNavbar.cshtml" />
     <Content Include="Views\Shared\_TopNavbar2.cshtml" />
     <Content Include="Views\TestTypes\Index.cshtml" />
+    <Content Include="Views\Tests\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
