@@ -213,6 +213,7 @@
     <Compile Include="Controllers\TestTypesAPIController.cs" />
     <Compile Include="Controllers\TestTypesController.cs" />
     <Compile Include="Extension\HMTLHelperExtensions.cs" />
+    <Compile Include="Extension\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -257,7 +258,9 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\ui-bootstrap.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

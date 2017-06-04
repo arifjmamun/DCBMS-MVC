@@ -57,6 +57,7 @@
       <DependentUpon>201705291642042_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ApiModels\TestDTO.cs" />
     <Compile Include="Models\ApiModels\TestTypeDTO.cs" />
     <Compile Include="Models\EntityModels\Test.cs" />
     <Compile Include="Models\EntityModels\TestEntry.cs" />

@@ -56,7 +56,7 @@
                                     <td>{{$index+1}}</td>
                                     <td>{{test.TestName}}</td>
                                     <td>{{test.Fee}}</td>
-                                    <td>{{test.TestTypeId}}</td>
+                                    <td>{{test.TestTypeName}}</td>
                                     <td>
                                         <a href="@Url.Action("Index", "Tests")" class="btn btn-xs btn-info">Details</a>
                                         <button class="btn btn-xs btn-default" ng-click="editTest(this)" data-toggle="modal" data-target="#editTestModal">Edit</button>
@@ -103,7 +103,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.TestTypeId, htmlAttributes: new { @class = "control-label col-lg-4" })
                             <div class="col-lg-6">
-                                @Html.DropDownListFor(model => model.TestTypeId, Enumerable.Empty<SelectListItem>(), "Select One", new { @class = "form-control", @ng_model = "test.TestTypeId" })
+                                @Html.DropDownListFor(model => model.TestTypeId, Enumerable.Empty<SelectListItem>(), "Select One", new { @class = "form-control", @ng_model = "test.TestTypeId", @ng_options = "testType.TestTypeId as testType.TestTypeName for testType in testTypes track by testType.TestTypeId" })
                                 <span class="help-block m-b-none text-danger">@Html.ValidationMessageFor(model => model.TestTypeId)</span>
                             </div>
                         </div>
@@ -127,7 +127,7 @@
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h3 class="modal-title">Edit | Test Type</h3>
                 </div>
-                <form method="post" class="form-horizontal" ng-submit="saveChangesTest()">
+                <form method="post" class="form-horizontal" ng-submit="saveChangesTest()" name="editTestForm">
                     <div class="modal-body">
                         <input type="hidden" ng-model="test.TestId" />
                         <div class="form-group">
@@ -147,7 +147,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.TestTypeId, htmlAttributes: new { @class = "control-label col-lg-4" })
                             <div class="col-lg-6">
-                                @Html.DropDownListFor(model => model.TestTypeId, Enumerable.Empty<SelectListItem>(), "Select One", new { @class = "form-control", @ng_model = "test.TestTypeId" })
+                                @Html.DropDownListFor(model => model.TestTypeId, Enumerable.Empty<SelectListItem>(), "Select One", new { @class = "form-control", @ng_model = "test.TestTypeId", @ng_options = "testType.TestTypeId as testType.TestTypeName for testType in testTypes track by testType.TestTypeId" })
                                 <span class="help-block m-b-none text-danger">@Html.ValidationMessageFor(model => model.TestTypeId)</span>
                             </div>
                         </div>
@@ -186,5 +186,3 @@
     @Styles.Render("~/plugins/sweetAlertStyles")
     @Styles.Render("~/plugins/toastrStyles")
 }
-
-

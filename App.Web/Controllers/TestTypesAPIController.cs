@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 using App.Core.Context;
 using App.Core.Models.ApiModels;
 using App.Core.Models.EntityModels;
+using App.Web.Extension;
 
 namespace App.Web.Controllers
 {
@@ -19,7 +20,7 @@ namespace App.Web.Controllers
         private AppDbContext db = new AppDbContext();
 
         // GET: api/TestTypesAPI
-        public IEnumerable<TestTypeDTO> GetTestTypes()
+        public IQueryable<TestTypeDTO> GetTestTypes()
         {
             return db.TestTypes.Select(x=> new TestTypeDTO
             {
@@ -77,6 +78,7 @@ namespace App.Web.Controllers
 
         // POST: api/TestTypesAPI
         [ResponseType(typeof(TestType))]
+        [ValidateModel]
         public IHttpActionResult PostTestType(TestType testType)
         {
             if (!ModelState.IsValid)

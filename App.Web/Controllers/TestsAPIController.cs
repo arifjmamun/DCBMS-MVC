@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using App.Core.Context;
+using App.Core.Models.ApiModels;
 using App.Core.Models.EntityModels;
 
 namespace App.Web.Controllers
@@ -18,9 +19,17 @@ namespace App.Web.Controllers
         private AppDbContext db = new AppDbContext();
 
         // GET: api/TestsAPI
-        public IQueryable<Test> GetTests()
+        public IQueryable<TestDTO> GetTests()
         {
-            return db.Tests;
+            var tests = db.Tests.Join(db.TestTypes, t => t.TestTypeId, tt => tt.TestTypeId, (t, tt) => new TestDTO
+            {
+                TestId = t.TestId,
+                TestName = t.TestName,
+                Fee = t.Fee,
+                TestTypeName = tt.TestTypeName,
+                TestTypeId = tt.TestTypeId
+            });
+            return tests;
         }
 
         // GET: api/TestsAPI/5
@@ -75,6 +84,9 @@ namespace App.Web.Controllers
         [ResponseType(typeof(Test))]
         public IHttpActionResult PostTest(Test test)
         {
+            if (test == null) return BadRequest(ModelState);
+            if (test.TestTypeId <= 0) ModelState.AddModelError("TestTypeId", "The field cannot be empty!");
+            if (Math.Abs(test.Fee) <= 0) ModelState.AddModelError("Fee", "The field cannot be empty!");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -83,7 +95,15 @@ namespace App.Web.Controllers
             db.Tests.Add(test);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = test.TestId }, test);
+            return CreatedAtRoute("DefaultApi", new { id = test.TestId }, db.Tests.Join(db.TestTypes, t => t.TestTypeId, tt => tt.TestTypeId, (t, tt) => new { t, tt })
+                    .Where(x => x.t.TestId == test.TestId).Select(x => new TestDTO
+                    {
+                        TestId = x.t.TestId,
+                        TestName = x.t.TestName,
+                        Fee = x.t.Fee,
+                        TestTypeName = x.tt.TestTypeName,
+                        TestTypeId = x.tt.TestTypeId
+                    }).SingleOrDefault());
         }
 
         // DELETE: api/TestsAPI/5
